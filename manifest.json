@@ -1,0 +1,15 @@
+{
+  "name": "Trade Calculator",
+  "short_name": "TradeCalc",
+  "icons": [
+    {
+      "src": "squirrel.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/trade-calculator/",
+  "display": "standalone",
+  "background_color": "#f2f2f7",
+  "theme_color": "#007aff"
+}
