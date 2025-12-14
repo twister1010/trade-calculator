@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Risk / Reward Trade Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+      color-scheme: light dark;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0f172a;
+      color: #e5e7eb;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 480px;
+      padding: 16px;
+      box-sizing: border-box;
+    }
+
+    .card {
+      background: #020617;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      border: 1px solid #1e293b;
+    }
+
+    h1 {
+      font-size: 1.4rem;
+      margin: 0 0 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .tagline {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      margin-bottom: 12px;
+    }
+
+    .squirrel {
+      font-size: 1.4rem;
+    }
+
+    .section-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #9ca3af;
+      margin: 12px 0 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    label {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid #1f2933;
+      background: #020617;
+      color: #e5e7eb;
+      font-size: 0.9rem;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    input[type="number"]:focus {
+      outline: none;
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 1px #38bdf8;
+    }
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    .btn-row {
+      margin-top: 14px;
+      display: flex;
+      gap: 8px;
+    }
+
+    button {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: linear-gradient(to right, #22c55e, #16a34a);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: #1f2937;
+      color: #e5e7eb;
+    }
+
+    .results {
+      margin-top: 14px;
+      border-top: 1px solid #1e293b;
+      padding-top: 10px;
+      font-size: 0.9rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 10px;
+    }
+
+    .result-label {
+      color: #9ca3af;
+      font-size: 0.8rem;
+    }
+
+    .result-value {
+      font-weight: 600;
+    }
+
+    .result-span-2 {
+      grid-column: 1 / -1;
+    }
+
+    .rr-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(34,197,94,0.1);
+      border: 1px solid rgba(34,197,94,0.4);
+      font-size: 0.85rem;
+      color: #bbf7d0;
+    }
+
+    .error {
+      margin-top: 8px;
+      font-size: 0.8rem;
+      color: #fecaca;
+    }
+
+    @media (prefers-color-scheme: light) {
+      body {
+        background: #e5e7eb;
+        color: #111827;
+      }
+      .card {
+        background: #f9fafb;
+        border-color: #d1d5db;
+      }
+      input[type="number"] {
+        background: #fff;
+        color: #111827;
+        border-color: #d1d5db;
+      }
+      .btn-secondary {
+        background: #e5e7eb;
+        color: #111827;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="card">
+      <h1>
+        Trade Calculator
+        <span class="squirrel">🐿️💰</span>
+      </h1>
+      <div class="tagline">Position sizing & risk / reward in one tap.</div>
+
+      <!-- Inputs -->
+      <div class="section-title">Inputs</div>
+      <div class="grid">
+        <div class="full-width">
+          <label for="accountSize">Account Size ($)</label>
+          <input id="accountSize" type="number" inputmode="decimal" placeholder="25000" />
+        </div>
+
+        <div>
+          <label for="riskPercent">Risk %</label>
+          <input id="riskPercent" type="number" inputmode="decimal" placeholder="1" />
+        </div>
+        <div>
+          <label>&nbsp;</label>
+          <div style="font-size:0.8rem;color:#9ca3af;">of account per trade</div>
+        </div>
+
+        <div>
+          <label for="entryPrice">Entry Price ($)</label>
+          <input id="entryPrice" type="number" inputmode="decimal" placeholder="30" />
+        </div>
+        <div>
+          <label for="stopLoss">Stop Loss ($)</label>
+          <input id="stopLoss" type="number" inputmode="decimal" placeholder="29.5" />
+        </div>
+
+        <div class="full-width">
+          <label for="targetPrice">Target Price ($)</label>
+          <input id="targetPrice" type="number" inputmode="decimal" placeholder="34" />
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="btn-row">
+        <button class="btn-primary" onclick="calculate()">Calculate</button>
+        <button class="btn-secondary" onclick="clearFields()">Clear</button>
+      </div>
+
+      <!-- Error -->
+      <div id="error" class="error"></div>
+
+      <!-- Results -->
+      <div class="section-title">Results</div>
+      <div class="results">
+        <div>
+          <div class="result-label">Risk Amount</div>
+          <div id="riskAmount" class="result-value">$0.00</div>
+        </div>
+        <div>
+          <div class="result-label">Risk per Share</div>
+          <div id="riskPerShare" class="result-value">$0.00</div>
+        </div>
+
+        <div>
+          <div class="result-label">Position Size</div>
+          <div id="positionSize" class="result-value">0 shares</div>
+        </div>
+        <div>
+          <div class="result-label">Purchase Amount</div>
+          <div id="purchaseAmount" class="result-value">$0.00</div>
+        </div>
+
+        <div>
+          <div class="result-label">Target Sale Amount</div>
+          <div id="targetAmount" class="result-value">$0.00</div>
+        </div>
+        <div>
+          <div class="result-label">Profit at Target</div>
+          <div id="profit" class="result-value">$0.00</div>
+        </div>
+
+        <div class="result-span-2">
+          <div class="result-label">Risk / Reward</div>
+          <div id="riskReward" class="rr-pill">–</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function fmtMoney(value) {
+      if (!isFinite(value)) return "$0.00";
+      return "$" + value.toFixed(2);
+    }
+
+    function fmtShares(value) {
+      if (!isFinite(value)) return "0 shares";
+      return value.toFixed(0) + " shares";
+    }
+
+    function calculate() {
+      const errEl = document.getElementById("error");
+      errEl.textContent = "";
+
+      const accountSize = parseFloat(document.getElementById("accountSize").value);
+      const riskPercent = parseFloat(document.getElementById("riskPercent").value);
+      const entryPrice = parseFloat(document.getElementById("entryPrice").value);
+      const stopLoss = parseFloat(document.getElementById("stopLoss").value);
+      const targetPrice = parseFloat(document.getElementById("targetPrice").value);
+
+      if (
+        [accountSize, riskPercent, entryPrice, stopLoss, targetPrice].some(
+          (v) => isNaN(v)
+        )
+      ) {
+        errEl.textContent = "Please fill in all input fields with numbers.";
+        return;
+      }
+
+      if (stopLoss >= entryPrice) {
+        errEl.textContent = "Stop loss must be LOWER than entry price.";
+        return;
+      }
+
+      if (targetPrice <= entryPrice) {
+        errEl.textContent = "Target price should be ABOVE entry price.";
+        return;
+      }
+
+      const riskAmount = accountSize * (riskPercent / 100.0);
+      const riskPerShare = entryPrice - stopLoss;
+      const positionSize = riskAmount / riskPerShare;
+
+      const purchaseAmount = positionSize * entryPrice;
+      const targetSaleAmount = positionSize * targetPrice;
+      const profit = targetSaleAmount - purchaseAmount;
+
+      let rrText = "–";
+      if (riskAmount > 0 && isFinite(profit)) {
+        const rr = profit / riskAmount;
+        rrText = "1 : " + rr.toFixed(2);
+      }
+
+      document.getElementById("riskAmount").textContent = fmtMoney(riskAmount);
+      document.getElementById("riskPerShare").textContent = fmtMoney(riskPerShare);
+      document.getElementById("positionSize").textContent = fmtShares(positionSize);
+      document.getElementById("purchaseAmount").textContent = fmtMoney(purchaseAmount);
+      document.getElementById("targetAmount").textContent = fmtMoney(targetSaleAmount);
+      document.getElementById("profit").textContent = fmtMoney(profit);
+      document.getElementById("riskReward").textContent = rrText;
+    }
+
+    function clearFields() {
+      const ids = ["accountSize", "riskPercent", "entryPrice", "stopLoss", "targetPrice"];
+      ids.forEach((id) => (document.getElementById(id).value = ""));
+
+      document.getElementById("error").textContent = "";
+      document.getElementById("riskAmount").textContent = "$0.00";
+      document.getElementById("riskPerShare").textContent = "$0.00";
+      document.getElementById("positionSize").textContent = "0 shares";
+      document.getElementById("purchaseAmount").textContent = "$0.00";
+      document.getElementById("targetAmount").textContent = "$0.00";
+      document.getElementById("profit").textContent = "$0.00";
+      document.getElementById("riskReward").textContent = "–";
+    }
+  </script>
+</body>
+</html>
