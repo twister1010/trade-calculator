@@ -1,3 +1,14 @@
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="squirrel.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/trade-calculator/service-worker.js");
+  }
+</script>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
