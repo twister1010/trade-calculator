@@ -1,21 +1,16 @@
-
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="squirrel.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("/trade-calculator/service-worker.js");
-  }
-</script>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>Risk / Reward Trade Calculator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- PWA / iPhone install support -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="squirrel.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#0f172a">
 
   <style>
     :root {
@@ -362,6 +357,12 @@
       document.getElementById("targetAmount").textContent = "$0.00";
       document.getElementById("profit").textContent = "$0.00";
       document.getElementById("riskReward").textContent = "–";
+    }
+
+    // Register the service worker (PWA offline/support)
+    if ("serviceWorker" in navigator) {
+      // Relative path so it works under /trade-calculator/ on GitHub Pages
+      navigator.serviceWorker.register("service-worker.js");
     }
   </script>
 </body>
